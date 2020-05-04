@@ -38,6 +38,7 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
   socket.on('varChanged', (val) => {
+    console.log(val)
     let prop = Object.keys(val)[0]
     let obj = cleanObj(val[prop])
     console.log(URL+" "+JSON.stringify({[prop]:obj}))
