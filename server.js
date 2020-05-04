@@ -26,6 +26,7 @@ app.use(function(req, res, next) {
 
 io.on('connection', (socket) => {
   console.log(socket.request.headers)
+  console.log(socket.request.url)
   console.log('a user connected');
   socket.on('disconnect', () => {
     console.log('user disconnected');
