@@ -1,16 +1,20 @@
 const express = require('express')
 const fetch = require('node-fetch');
+var app = require('express')();
+var http = require('http').createServer(app);
+var io = require('socket.io')(http);
 
-const app = express()
-
+require('dotenv').config();
 var admin = require("firebase-admin");
 console.log(process.env.FIREBASE_CONFIG)
-/*admin.initializeApp({
+
+admin.initializeApp({
     credential: admin.credential.cert(JSON.parse(process.env.FIREBASE_CONFIG)),
-    databaseURL: "https://big-thonk.firebaseio.com"
+    databaseURL: "https://cloud-variable.firebaseio.com/"
   });
+
 var db = admin.database();
-var serverData = db.ref("server-data");*/
+var serverData = db.ref("server-data");
 
 const port = process.env.PORT || 3000
 app.use(function(req, res, next) {
@@ -19,14 +23,17 @@ app.use(function(req, res, next) {
   next();
 });
 
+io.on('connection', (socket) => {
+  console.log('a user connected');
+  socket.on('disconnect', () => {
+    console.log('user disconnected');
+  });
+  socket.on('chat message', (msg) => {
+    console.log('message: ' + msg);
+  });
+});
 
-
-  /*app.get('/update', async (req, res) => {
-    req.query.prop
-    req.query.newValue
-    res.json({done:"done"})
-  });*/
-
-
-
-app.listen(port, () => console.log(`Example app listening on port ${port}!`))
+http.listen(port, () => {
+  console.log('listening on :'+port);
+});
+  
