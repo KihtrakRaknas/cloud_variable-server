@@ -15,7 +15,6 @@ admin.initializeApp({
   });
 
 var db = admin.database();
-var serverData = db.ref("server-data");
 
 const port = process.env.PORT || 3000
 app.use(function(req, res, next) {
@@ -28,12 +27,21 @@ io.on('connection', (socket) => {
   console.log(socket.request.headers)
   console.log(socket.request.url)
   console.log('a user connected');
+  db.ref(URL).once('value',(snap)=>{
+    socket.emit('init',snap.val())
+  })
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
   socket.on('varChanged', (val) => {
-    console.log('new val: ' + val);
-    socket.broadcast.emit(val);
+    let URL = socket.request.headers.origin
+    if(URL == null)
+      URL = "playground";
+    let prop = Object.keys(val)[0]
+    db.ref(URL).update({
+      [prop]:val[prop]
+    })
+    socket.broadcast.emit('newVal', val);
   });
 });
 
