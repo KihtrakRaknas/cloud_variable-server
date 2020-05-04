@@ -25,11 +25,12 @@ app.use(function(req, res, next) {
 
 io.on('connection', (socket) => {
   console.log(socket.request.headers)
-  console.log(socket.request.url)
   console.log('a user connected');
-  let URL = encodeURIComponent(socket.request.headers.origin)
-  if(URL == 'null')
+  let URL = encodeURIComponent(socket.request.headers.origin).replace(/\./g, '%2E')
+  if(URL == 'null'){
     URL = "playground";
+  }
+  console.log(URL)
   db.ref(URL).once('value',(snap)=>{
     socket.emit('init',snap.val())
   })
