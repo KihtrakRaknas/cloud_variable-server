@@ -38,7 +38,7 @@ io.on('connection', (socket) => {
   });
   socket.on('varChanged', (val) => {
     let prop = Object.keys(val)[0]
-    console.log({[prop]:val[prop]})
+    console.log(URL+" "+{[prop]:val[prop]})
     db.ref(URL).update({
       [prop]:val[prop]
     })
