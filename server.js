@@ -28,7 +28,7 @@ io.on('connection', (socket) => {
   console.log(socket.request.url)
   console.log('a user connected');
   let URL = encodeURIComponent(socket.request.headers.origin)
-  if(URL == null)
+  if(URL == 'null')
     URL = "playground";
   db.ref(URL).once('value',(snap)=>{
     socket.emit('init',snap.val())
