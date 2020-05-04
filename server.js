@@ -39,11 +39,11 @@ io.on('connection', (socket) => {
   });
   socket.on('varChanged', (val) => {
     let prop = Object.keys(val)[0]
-    console.log(URL+" "+JSON.stringify({[prop]:val[prop]}))
     db.ref(URL).update({
       [prop]:val[prop]
     })
     socket.broadcast.emit('newVal', val);
+    console.log(URL+" "+JSON.stringify({[prop]:val[prop]}))
   });
 });
 
