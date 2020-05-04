@@ -28,6 +28,8 @@ io.on('connection', (socket) => {
   console.log(socket.request.url)
   console.log('a user connected');
   let URL = encodeURIComponent(socket.request.headers.origin)
+  if(URL == null)
+    URL = "playground";
   db.ref(URL).once('value',(snap)=>{
     socket.emit('init',snap.val())
   })
@@ -35,8 +37,7 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
   socket.on('varChanged', (val) => {
-    if(URL == null)
-      URL = "playground";
+    console.log(val)
     let prop = Object.keys(val)[0]
     db.ref(URL).update({
       [prop]:val[prop]
