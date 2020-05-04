@@ -37,8 +37,8 @@ io.on('connection', (socket) => {
     console.log('user disconnected');
   });
   socket.on('varChanged', (val) => {
-    console.log(val)
     let prop = Object.keys(val)[0]
+    console.log({[prop]:val[prop]})
     db.ref(URL).update({
       [prop]:val[prop]
     })
