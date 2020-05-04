@@ -3,6 +3,7 @@ const fetch = require('node-fetch');
 var app = require('express')();
 var http = require('http').createServer(app);
 var io = require('socket.io')(http);
+//io.origins('*:*')
 
 require('dotenv').config();
 var admin = require("firebase-admin");
@@ -28,8 +29,8 @@ io.on('connection', (socket) => {
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
-  socket.on('chat message', (msg) => {
-    console.log('message: ' + msg);
+  socket.on('varChanged', (val) => {
+    console.log('new val: ' + val);
   });
 });
 
