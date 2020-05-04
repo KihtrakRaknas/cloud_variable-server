@@ -39,13 +39,15 @@ io.on('connection', (socket) => {
   });
   socket.on('varChanged', (val) => {
     console.log(val)
-    let prop = Object.keys(val)[0]
-    let obj = cleanObj(val[prop])
-    console.log(URL+" "+JSON.stringify({[prop]:obj}))
-    db.ref(URL).update({
-      [prop]:obj
-    })
-    socket.broadcast.emit('newVal', val);
+    if(Object.keys(val).length>0){
+      let prop = Object.keys(val)[0]
+      let obj = val[prop]//cleanObj(val[prop])
+      console.log(URL+" "+JSON.stringify({[prop]:obj}))
+      db.ref(URL).update({
+        [prop]:obj
+      })
+      socket.broadcast.emit('newVal', val);
+    }
   });
 });
 
