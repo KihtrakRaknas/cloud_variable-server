@@ -39,13 +39,25 @@ io.on('connection', (socket) => {
   });
   socket.on('varChanged', (val) => {
     let prop = Object.keys(val)[0]
+    let obj = cleanObj(val[prop])
+    console.log(URL+" "+JSON.stringify({[prop]:obj}))
     db.ref(URL).update({
-      [prop]:val[prop]
+      [prop]:obj
     })
     socket.broadcast.emit('newVal', val);
-    console.log(URL+" "+JSON.stringify({[prop]:val[prop]}))
   });
 });
+
+function cleanObj(obj){
+  if(typeof obj != "object"){
+    if(typeof obj == "function")
+      obj = obj.toString();
+    return obj
+  }
+  for(let prop of obj)
+      obj[prop] = cleanObj(obj[prop])
+  return obj
+}
 
 http.listen(port, () => {
   console.log('listening on :'+port);
