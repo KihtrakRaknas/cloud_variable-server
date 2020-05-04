@@ -25,12 +25,14 @@ app.use(function(req, res, next) {
 });
 
 io.on('connection', (socket) => {
+  console.log(socket.request.headers)
   console.log('a user connected');
   socket.on('disconnect', () => {
     console.log('user disconnected');
   });
   socket.on('varChanged', (val) => {
     console.log('new val: ' + val);
+    socket.broadcast.emit(val);
   });
 });
 
