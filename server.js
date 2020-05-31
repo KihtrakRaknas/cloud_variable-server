@@ -32,7 +32,8 @@ io.on('connection', (socket) => {
   }
   console.log(URL)
   db.ref(URL).once('value',(snap)=>{
-    socket.emit('init',snap.val())
+    console.log('init-'+URL)
+    socket.emit('init-'+URL,snap.val())
   })
   socket.on('disconnect', () => {
     console.log('user disconnected');
