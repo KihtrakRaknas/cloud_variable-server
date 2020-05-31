@@ -46,7 +46,7 @@ io.on('connection', (socket) => {
       db.ref(URL).update({
         [prop]:obj
       })
-      socket.broadcast.emit('newVal', val);
+      socket.broadcast.emit('newVal-'+URL, val);
     }
   });
 });
